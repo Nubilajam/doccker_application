@@ -45,7 +45,17 @@ module "globalvars" {
   source = "../../modules/globalvars"
 }
 
-# Reference subnet provisioned by 01-Networking 
+# Elastic IP
+resource "aws_eip" "static_eip" {
+  instance = aws_instance.my_amazon.id
+  tags = merge(local.default_tags,
+    {
+      "Name" = "${local.name_prefix}-eip"
+    }
+  )
+}
+
+# Reference subnet Networking 
 resource "aws_instance" "my_amazon" {
   ami                         = data.aws_ami.latest_amazon_linux.id
   instance_type               = lookup(var.instance_type, var.env)
@@ -65,7 +75,7 @@ resource "aws_instance" "my_amazon" {
 }
 
 
-# Adding SSH key to Amazon EC2
+# Adding SSH key to  EC2
 resource "aws_key_pair" "my_key" {
   key_name   = local.name_prefix
   public_key = file("${local.name_prefix}.pub")
