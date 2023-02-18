@@ -41,7 +41,7 @@ jobs:
     - name: Building the sql and push image to Amazon ECR
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        ECR_REPOSITORY: sql_nubila_ecr
+        ECR_REPOSITORY: mysql_nubila_ecr
         IMAGE_TAG: v0.1
       run: |
         cd sql_app/
